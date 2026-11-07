@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>For Sapna</title>
+<meta property="og:title" content="For Sapna">
+<meta property="og:description" content="A letter, just for you.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Caveat:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --night: #1c1024;
+    --wine: #4d1f3d;
+    --gold: #f2bb6b;
+    --gold-deep: #e08a4a;
+    --rose: #d97a8e;
+    --paper: #f1e9ee;
+    --paper-text: #35202f;
+    --muted: #bba6b8;
+    --serif: "Newsreader", Georgia, "Times New Roman", serif;
+    --hand: "Caveat", "Segoe Script", cursive;
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body {
+    font-family: var(--serif);
+    color: var(--paper);
+    background: radial-gradient(120% 80% at 50% 115%, var(--wine) 0%, transparent 62%), var(--night);
+    overflow-x: hidden;
+    padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px);
+  }
+  .stage { min-height: 100%; display: grid; place-items: center; padding: 28px 22px; }
+
+  /* ---------- intro ---------- */
+  #intro { text-align: center; max-width: 420px; transition: opacity .9s ease, transform .9s ease; }
+  #intro.gone { opacity: 0; transform: translateY(-14px); pointer-events: none; position: absolute; }
+
+  .lantern {
+    width: 92px; height: 120px; margin: 0 auto 34px; position: relative; display: block; padding: 0; border: 0; cursor: pointer;
+    border-radius: 46px 46px 38px 38px / 54px 54px 40px 40px;
+    background: radial-gradient(circle at 50% 55%, #ffe3b0 0%, var(--gold) 45%, var(--gold-deep) 100%);
+    box-shadow: 0 0 60px 18px rgba(242,187,107,.28), 0 0 140px 50px rgba(217,122,142,.14);
+    animation: breathe 4.5s ease-in-out infinite;
+  }
+  .lantern::before, .lantern::after { content: ""; position: absolute; left: 50%; transform: translateX(-50%); background: #5b3a30; border-radius: 3px; }
+  .lantern::before { top: -10px; width: 34px; height: 9px; }
+  .lantern::after { bottom: -9px; width: 26px; height: 9px; }
+  @keyframes breathe { 0%,100% { filter: brightness(.9); transform: scale(1); } 50% { filter: brightness(1.12); transform: scale(1.03); } }
+  .lantern:focus-visible, .btn:focus-visible { outline: 3px solid var(--paper); outline-offset: 6px; }
+
+  #intro h1 { font-weight: 500; font-size: clamp(2.2rem, 8vw, 3rem); line-height: 1.1; margin: 0 0 12px; }
+  #intro p { color: var(--muted); font-size: 1.1rem; line-height: 1.55; margin: 0 0 30px; }
+
+  .btn {
+    font-family: var(--serif); font-size: 1.05rem; font-weight: 500;
+    color: var(--night); background: var(--gold);
+    border: 0; border-radius: 999px; padding: 14px 28px; cursor: pointer;
+    transition: transform .2s ease, background .2s ease; text-decoration: none; display: inline-block;
+  }
+  .btn:hover { background: #ffc97f; }
+  .btn:active { transform: scale(.97); }
+
+  /* ---------- letter ---------- */
+  #letter {
+    display: none; width: 100%; max-width: 540px;
+    background: var(--paper); color: var(--paper-text);
+    border-radius: 6px 6px 14px 14px;
+    padding: clamp(28px, 6vw, 46px) clamp(24px, 6vw, 44px);
+    box-shadow: 0 30px 80px rgba(0,0,0,.5), 0 0 90px rgba(217,122,142,.18);
+    opacity: 0; transform: translateY(18px) scale(.98);
+    transition: opacity 1s ease, transform 1s ease;
+  }
+  #letter.show { opacity: 1; transform: none; }
+  #letter .to { font-family: var(--hand); font-size: 2rem; margin: 0 0 18px; color: #a2405a; }
+
+  .line {
+    font-size: clamp(1.12rem, 3.8vw, 1.26rem); line-height: 1.7; max-width: 62ch;
+    margin: 0; opacity: 0; max-height: 0; overflow: hidden; transform: translateY(6px);
+    transition: opacity .8s ease, max-height .8s ease, transform .8s ease, margin .8s ease;
+  }
+  .line.in { opacity: 1; max-height: 16em; transform: none; margin-bottom: 16px; }
+  .line.ask { font-size: clamp(1.35rem, 5vw, 1.6rem); font-weight: 500; line-height: 1.35; }
+
+  .sign { font-family: var(--hand); font-size: 2.1rem; color: #a2405a; line-height: 1.1; }
+  .sign small { display: block; font-size: 1.5rem; color: #8a6479; }
+
+  .controls { margin-top: 22px; display: flex; gap: 12px; align-items: center; justify-content: space-between; }
+  .dots { display: flex; gap: 7px; }
+  .dots i { width: 7px; height: 7px; border-radius: 50%; background: #d5bfcc; transition: background .4s ease, transform .4s ease; }
+  .dots i.on { background: var(--rose); transform: scale(1.25); }
+  #letter .btn { background: var(--night); color: var(--paper); }
+  #letter .btn:hover { background: #2e1a39; }
+
+  /* answers */
+  #answers { display: none; margin-top: 6px; }
+  #answers.show { display: block; }
+  .choices { display: flex; flex-direction: column; gap: 12px; }
+  #letter .btn.yes { background: var(--rose); color: #2a0f1c; }
+  #letter .btn.yes:hover { background: #e48c9e; }
+  #letter .btn.time { background: transparent; color: var(--paper-text); border: 1.5px solid #b79aaa; }
+  #letter .btn.time:hover { background: rgba(77,31,61,.08); }
+  #reply { display: none; margin-top: 4px; }
+  #reply.show { display: block; }
+  #reply p { font-size: 1.2rem; line-height: 1.65; margin: 0 0 16px; }
+  #reply .btn { margin-top: 2px; }
+
+  .spark { position: fixed; bottom: -10px; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); opacity: 0; pointer-events: none; animation: rise linear forwards; }
+  @keyframes rise { 0% { opacity: 0; transform: translate(0,0); } 15% { opacity: .85; } 100% { opacity: 0; transform: translate(var(--dx, 20px), -105vh); } }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lantern { animation: none; }
+    .line, #letter, #intro { transition: none; }
+    .spark { display: none; }
+  }
+</style>
+</head>
+<body>
+<main class="stage">
+
+  <section id="intro">
+    <button class="lantern" id="lantern" aria-label="Light the lantern and open the letter"></button>
+    <h1>For Sapna</h1>
+    <p>There’s something I want to tell you.<br>Tap the lantern when you’re ready.</p>
+    <button class="btn" id="openBtn">Open the letter</button>
+  </section>
+
+  <article id="letter" aria-live="polite">
+    <p class="to">Dear Sapna,</p>
+
+    <p class="line">I’ll say this plainly, because you deserve honesty more than pretty words.</p>
+    <p class="line">I took the best things for granted: your patience, your laugh, the way you made ordinary days feel lighter.</p>
+    <p class="line">I know I haven’t always made you feel like a priority. That was my failure, not yours, and I’m sorry.</p>
+    <p class="line">I’m not asking you to forget what happened. I’m asking you to see who I’m working to become.</p>
+    <p class="line">When I picture my future, the home, the family, the quiet evenings, it’s you beside me. Not as a wish, but as a promise I want to earn.</p>
+    <p class="line">If you give me another chance, you will come first in my words and in my actions: in how I listen, how I show up, and how I speak to you and about you.</p>
+    <p class="line">I want to do this the right way, with respect, with patience, and with our families when you feel ready.</p>
+    <p class="line ask">Sapna, will you let me try again?</p>
+
+    <div class="controls" id="controls">
+      <div class="dots" id="dots" aria-hidden="true"></div>
+      <button class="btn" id="nextBtn">Keep reading</button>
+    </div>
+
+    <div id="answers">
+      <div class="choices">
+        <button class="btn yes" id="yesBtn">Yes, let’s talk</button>
+        <button class="btn time" id="timeBtn">I need some time</button>
+      </div>
+    </div>
+
+    <div id="reply" aria-live="polite">
+      <p id="replyText"></p>
+      <a class="btn" id="chatBtn" href="#" style="display:none">Message Baasit</a>
+      <div class="sign" style="margin-top:14px">Yours,<small>Baasit</small></div>
+    </div>
+  </article>
+
+</main>
+
+<script>
+(function () {
+  // OPTIONAL: put Baasit's WhatsApp number here with country code, digits only (e.g. "919876543210").
+  var WHATSAPP = "";
+
+  var intro = document.getElementById('intro');
+  var letter = document.getElementById('letter');
+  var lines = Array.prototype.slice.call(letter.querySelectorAll('.line'));
+  var nextBtn = document.getElementById('nextBtn');
+  var controls = document.getElementById('controls');
+  var answers = document.getElementById('answers');
+  var dots = document.getElementById('dots');
+  var reply = document.getElementById('reply');
+  var replyText = document.getElementById('replyText');
+  var chatBtn = document.getElementById('chatBtn');
+  var shown = 0;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  lines.forEach(function () { dots.appendChild(document.createElement('i')); });
+
+  function sparks(n) {
+    if (reduce) return;
+    for (var i = 0; i < n; i++) {
+      var s = document.createElement('span');
+      s.className = 'spark';
+      s.style.left = (Math.random() * 100) + 'vw';
+      s.style.setProperty('--dx', (Math.random() * 80 - 40) + 'px');
+      s.style.animationDuration = (5 + Math.random() * 5) + 's';
+      s.style.animationDelay = (Math.random() * 2) + 's';
+      document.body.appendChild(s);
+      setTimeout(function (el) { el.remove(); }.bind(null, s), 13000);
+    }
+  }
+
+  function reveal() {
+    if (shown >= lines.length) return;
+    lines[shown].classList.add('in');
+    shown++;
+    var all = dots.children;
+    for (var i = 0; i < all.length; i++) all[i].classList.toggle('on', i < shown);
+    lines[shown - 1].scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+    if (shown === lines.length) {
+      controls.style.display = 'none';
+      setTimeout(function () { answers.classList.add('show'); }, 700);
+    }
+  }
+
+  function openLetter() {
+    sparks(22);
+    intro.classList.add('gone');
+    setTimeout(function () {
+      intro.style.display = 'none';
+      letter.style.display = 'block';
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          letter.classList.add('show');
+          setTimeout(reveal, 900);
+        });
+      });
+    }, reduce ? 0 : 800);
+  }
+
+  function answer(kind) {
+    answers.classList.remove('show');
+    if (kind === 'yes') {
+      replyText.textContent = 'Thank you, Sapna. I won’t just tell you I’ve changed. I’ll show you, one day at a time.';
+      sparks(30);
+      if (WHATSAPP) {
+        chatBtn.href = 'https://wa.me/' + WHATSAPP + '?text=' + encodeURIComponent('Hi Baasit, I read your letter. Let’s talk.');
+        chatBtn.style.display = 'inline-block';
+      }
+    } else {
+      replyText.textContent = 'Take all the time you need. There’s no pressure and no deadline. Your peace matters more to me than my own hopes.';
+    }
+    reply.classList.add('show');
+    reply.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+  }
+
+  document.getElementById('lantern').addEventListener('click', openLetter);
+  document.getElementById('openBtn').addEventListener('click', openLetter);
+  nextBtn.addEventListener('click', reveal);
+  document.getElementById('yesBtn').addEventListener('click', function () { answer('yes'); });
+  document.getElementById('timeBtn').addEventListener('click', function () { answer('time'); });
+})();
+</script>
+</body>
+</html>
